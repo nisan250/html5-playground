@@ -1,0 +1,233 @@
+<canvas></canvas>
+<menu id="inputdevices"></menu>
+
+
+
+
+var canvas = document.querySelector("canvas");
+
+// Optional frames per second argument.
+var stream = canvas.captureStream(25);
+var recordedChunks = [];
+
+console.log(stream);
+var options = { mimeType: "video/webm; codecs=vp9" };
+mediaRecorder = new MediaRecorder(stream, options);
+
+mediaRecorder.ondataavailable = handleDataAvailable;
+mediaRecorder.start();
+
+function handleDataAvailable(event) {
+  console.log("data-available");
+  if (event.data.size > 0) {
+    recordedChunks.push(event.data);
+    console.log(recordedChunks);
+    download();
+  } else {
+    // ...
+  }
+}
+function download() {
+  var blob = new Blob(recordedChunks, {
+    type: "video/webm"
+  });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  document.body.appendChild(a);
+  a.style = "display: none";
+  a.href = url;
+  a.download = "test.webm";
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
+
+// demo: to download after 9sec
+setTimeout(event => {
+  console.log("stopping");
+  mediaRecorder.stop();
+}, 9000);
+
+
+
+
+
+
+  navigator.mediaDevices.enumerateDevices()
+  .then(function(devices) {
+    let cameras = [];
+    let microphones = [];
+    devices.forEach(function(device) {
+      console.log(
+        " deviceId = " + device.deviceId +
+        " kind = " + device.kind +
+        " label = " + device.label +
+        " groupId = " + device.groupId
+      );
+
+      if (device.kind === 'videoinput') {
+        cameras.push(device);
+      }
+      if (device.kind === 'audioinput') {
+        microphones.push(device);
+      }
+    })
+    console.log(cameras);
+    console.log(microphones);
+    /*
+    let item = document.createElement("option");
+    item.innerHTML = device.label;
+    item.value = device.deviceId;
+    menu.appendChild(item);
+    */
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+                  <h1>Webcam Memories</h1>
+
+                  <video id="photoPreview" autoplay></video>
+                  <canvas id="photoCanvas"></canvas>
+
+                  <!-- From http://www.soundjay.com/mechanical/ -->
+                  <audio id="cameraShutterClick" src="./images/camera-shutter-click-08.mp3"></audio>
+<!--
+                  <paper-dropdown-menu label="Camera Source">
+                      <paper-listbox slot="dropdown-content" selected="{{selectedCameraIdx}}">
+                          <template is="dom-repeat" items="[[cameraDevices]]">
+                              <paper-item>[[item.label]] ([[item.deviceId]])</paper-item>
+                          </template>
+                      </paper-listbox>
+                  </paper-dropdown-menu>
+-->
+                  <button id="startCamera">Webcam Photo</button>
+                  <button id="takePicture">Take Picture</button>
+              </div>
+
+              <div class="card">
+                  <h1>Video Memories</h1>
+
+                  <video id="video" src="[[videoUrl]]" controls></video>
+
+                  <button id="takeVideo">Record Video</button>
+
+                  <div style="display: none;">
+                      <input id="videoInput" type="file" accept="video/*" capture on-change="uploadVideo">
+                  </div>
+              </div>
+
+              <div class="card">
+                  <h1>Audio Memories</h1>
+
+                  <audio id="audio" src="[[audioUrl]]" controls></audio>
+
+                  <button id="takeAudio">Record Audio</button>
+
+                  <div style="display: none;">
+                      <input id="audioInput" type="file" accept="audio/*" capture on-change="uploadAudio">
+                  </div>
+              </div>
+
+              <div class="card">
+
+                  <h1>Basic Memories</h1>
+
+                  <figure class$="[[filterName]]">
+                      <img id="photo" src="[[selfieUrl]]" on-click="toggleFullScreenPhoto">
+                  </figure>
+
+                  <button id="takePhoto">Take Photo</button>
+                  <button id="toggleFilters">Filter</button>
+
+                  <div style="display: none;">
+                      <input id="photoInput" type="file" accept="image/*" capture on-change="uploadPhoto">
+                      <!--
+                      <template is="dom-if" if="{{fsCurrentlyUploading}}">
+                          <paper-progress max="{{fsTotalBytes}}" value="{{fsBytesTransferred}}"></paper-progress>
+                          <div>Transferring {{fsBytesTransferred}} of {{fsTotalBytes}}  ({{fsState}})</div>
+                      </template>
+                      -->
+                  </div>
+                  <!--
+                  <template is="dom-if" if="[[showFilters]]">
+
+                      <ss-photo-filters image-data='[[selfieUrl]]' selected-filter='{{filterName}}'>
+                      </ss-photo-filters>
+
+                  </template>
+                  -->
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+  /*
+  var cameraElement = document.getElementById('startCamera');
+  var pictureElement = document.getElementById('takePicture');
+  var videoElement = document.getElementById('takeVideo');
+  var audioElement = document.getElementById('takeAudio');
+  var photoElement = document.getElementById('takePhoto');
+  var filterElement = document.getElementById('toggleFilters');
+
+  cameraElement.addEventListener('click', event => {
+    //
+    console.log('cameraElement');
+
+  });
+
+  pictureElement.addEventListener('click', event => {
+    //
+    console.log('pictureElement');
+  });
+
+  videoElement.addEventListener('click', event => {
+    //
+    console.log('videoElement');
+  });
+
+  audioElement.addEventListener('click', event => {
+    //
+    console.log('audioElement');
+  });
+
+  photoElement.addEventListener('click', event => {
+    //
+    console.log('photoElement');
+  });
+
+  filterElement.addEventListener('click', event => {
+    //
+    console.log('filterElement');
+  });
+  */
