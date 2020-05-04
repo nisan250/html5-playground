@@ -145,6 +145,7 @@ pre.long-code {
 
 .card {
     border: solid 1px #fff;
+    margin-bottom: 15px;
 }
 
 .card:hover {
