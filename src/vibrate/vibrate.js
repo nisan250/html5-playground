@@ -4,6 +4,8 @@ window.onload = function() {
   var button2 = document.getElementById('example2');
   var button3 = document.getElementById('example3');
   var button4 = document.getElementById('example4');
+  var button5 = document.getElementById('example5');
+  var button6 = document.getElementById('example6');
 
   button1.addEventListener('click', event => {
     // Vibrate for 500ms
@@ -32,26 +34,69 @@ window.onload = function() {
     navigator.vibrate(0);
   });
 
+  button5.addEventListener('click', event => {
+    // NotificationOptions.vibrate Sample
+    /*
+      When displaying a system notification your device may vibrate to alert the user.
+      You can specify the vibration pattern that should be used in the same way as for the
+      <a href="../vibration/index.html">Vibration API</a>.
 
-  // NotificationOptions.vibrate Sample
-  /*
-  navigator.serviceWorker.register('sw.js');
+      When creating the notification, just set the 'vibrate' property of the notification options
+      to be a Vibration API pattern.
 
-  function showNotification() {
+      Chrome for Android only supports showing persistant notifications, which are associated with
+      a service worker to handle the click event. We must first register a worker, and create the
+      notification using the showNotification method of the registration object.
+    */
+    navigator.serviceWorker.register('sw.js');
+
     Notification.requestPermission(function(result) {
       if (result === 'granted') {
         navigator.serviceWorker.ready.then(function(registration) {
           registration.showNotification('Vibration Sample', {
             body: 'Buzz! Buzz!',
-            icon: '../images/touch/chrome-touch-icon-192x192.png',
+            icon: '../../192x192.png',
             vibrate: [200, 100, 200, 100, 200, 100, 200],
             tag: 'vibration-sample'
           });
         });
       }
     });
-  }
-  */
+  });
+
+  button6.addEventListener('click', event => {
+    // NotificationOptions.requireInteraction
+    /*
+    On Chrome desktop, prior to Chrome 47, a notification toast would stay on screen
+    until the user interacted with it. As of Chrome 47 notifications will minimize to the
+    notification center after approximately 8 seconds unless the 'requireInteraction' property
+    of the notification options is set to true.
+
+    Chrome for Android is not affected as all notifications are minimized to the
+    notification tray.</p>
+    */
+    navigator.serviceWorker.register('sw.js');
+
+    Notification.requestPermission(function(result) {
+      if (result === 'granted') {
+        navigator.serviceWorker.ready.then(function(registration) {
+          registration.showNotification('requireInteraction: true', {
+            body: 'Requires interaction',
+            icon: '../../192x192.png',
+            requireInteraction: true,
+            tag: 'require-interaction'
+          });
+
+          registration.showNotification('requireInteraction: false', {
+            body: 'Does not require interaction',
+            icon: '../../192x192.png',
+            requireInteraction: false,
+            tag: 'no-require-interaction'
+          });
+        });
+      }
+    });
+  });
 }
 
 
