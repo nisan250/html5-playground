@@ -1,0 +1,18 @@
+{
+  "name": "html5-playground-app",
+  "version": "1.0.0",
+  "description": "HTML5 Demos",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server",
+    "ws-hello": "node web-sockets/hello/hello.js",
+    "ws-ticker": "node web-sockets/ticker/ticker.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nisan Sabag",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^0.11.1",
+    "ws": "^6.2.0"
+  }
+}
